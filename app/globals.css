@@ -1,0 +1,1602 @@
+/* MoMoney — Calm Money theme. Light paper background, Newsreader serif for
+   headlines/big numbers, Public Sans for UI text. Mobile-first responsive
+   (the app is used daily on iPhone). */
+
+:root {
+  color-scheme: light;
+  /* Calm Money tokens */
+  --page: #faf9f6;
+  --surface: #ffffff;
+  --ink: #21201c;
+  --ink2: #504c42;
+  --muted: #6d695f;
+  --faint: #a39e91;
+  --hairline: #eeebe2;
+  --border: #e3dfd4;
+  --chip-border: #d9d5ca;
+  --grid: #eeebe2;
+  --baseline: #a39e91;
+
+  --s1: #2b6cb8;
+  --s1-hover: #1d4e8a;
+  --s2: #b8481f;
+  --s3: #1e7a46;
+  --good: #1e7a46;
+  --warn: #8a6414;
+  --crit: #b8481f;
+  --crit-bg: #fdf6f2;
+
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-public-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--page);
+  color: var(--ink);
+}
+
+body {
+  font: 15px/1.55 var(--font-sans);
+  max-width: 1040px;
+  margin: 0 auto;
+  /* Safe-area insets (iOS standalone PWA, v4 addendum 2026-09-12): there's
+     no browser chrome in standalone mode, so the page itself has to clear
+     the notch/home-indicator. env(...) resolves to 0 on anything that
+     doesn't need it (desktop, browser tab), so this is a no-op there. */
+  padding: 0 max(20px, env(safe-area-inset-right)) max(60px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+}
+
+a {
+  color: var(--s1);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--s1-hover);
+}
+
+main {
+  display: block;
+}
+
+/* ---------- top nav ---------- */
+
+.navbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  /* Sticky at the very top, so it's the one element that has to clear the
+     notch/Dynamic Island itself in standalone mode. */
+  padding: calc(22px + env(safe-area-inset-top)) 0 14px;
+  position: sticky;
+  top: 0;
+  background: var(--page);
+  z-index: 8;
+}
+
+.navbar-word {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--ink);
+  flex: 0 0 auto;
+}
+
+.navbar-scroll {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+
+.navbar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar-tab {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  flex: 0 0 auto;
+}
+
+.navbar-tab:hover {
+  color: var(--ink);
+}
+
+.navbar-tab.active {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--ink);
+}
+
+.navbar-ask {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--chip-border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12.5px;
+  background: var(--surface);
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.navbar-ask:hover {
+  border-color: var(--s1);
+  color: var(--s1);
+}
+
+.navbar-privacy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--chip-border);
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--surface);
+  cursor: pointer;
+  flex: 0 0 auto;
+  padding: 0;
+}
+
+.navbar-privacy:hover {
+  border-color: var(--s1);
+  color: var(--s1);
+}
+
+.navbar-privacy.on {
+  border-color: var(--s1);
+  background: color-mix(in oklab, var(--s1) 10%, var(--surface));
+}
+
+h1 {
+  font-size: 20px;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.meta {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+h2 {
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 14px 0;
+}
+
+/* ---------- page header (kicker + serif title + optional stat row) ---------- */
+
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 10px 0 22px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+
+.page-head-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-kicker {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.page-title {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1.08;
+}
+
+.page-sub {
+  font-size: 14px;
+  color: var(--ink2);
+  max-width: 62ch;
+  padding-top: 2px;
+}
+
+.page-stats {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.page-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.page-stat .n {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--ink);
+}
+
+.page-stat .n.rust {
+  color: var(--crit);
+}
+
+.page-stat .l {
+  font-size: 12.5px;
+  color: var(--ink2);
+}
+
+/* ---------- callout (border-top accent card) ---------- */
+
+.callout {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  border-top: 2px solid var(--s1);
+  padding-top: 13px;
+  margin: 14px 0;
+}
+
+.callout.rust {
+  border-top-color: var(--crit);
+}
+
+.callout-title {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.callout-body {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.55;
+}
+
+.callout-step {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- hero (overview net worth) ---------- */
+
+.hero {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 10px 0 4px;
+}
+
+.hero .n {
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.hero .d {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.hero .sub {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.up {
+  color: var(--good);
+}
+
+.down {
+  color: var(--crit);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.card .k {
+  font-size: 11.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.card .v {
+  font-family: var(--font-serif);
+  font-size: 25px;
+  margin-top: 3px;
+}
+
+.card .unit {
+  font-size: 14px;
+  color: var(--ink2);
+  font-weight: 500;
+  font-family: var(--font-sans);
+}
+
+.card .sub {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.meter {
+  background: color-mix(in oklab, var(--s1) 12%, var(--hairline));
+  border-radius: 5px;
+  height: 10px;
+  margin: 8px 0 4px;
+  overflow: hidden;
+}
+
+.mfill {
+  background: var(--s1);
+  height: 100%;
+  border-radius: 5px;
+  min-width: 2px;
+}
+
+.mfill.rust {
+  background: var(--crit);
+}
+
+svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.grid {
+  stroke: var(--grid);
+  stroke-width: 1;
+}
+
+.ax {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.glide {
+  stroke: var(--baseline);
+  stroke-dasharray: 6 5;
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.nwline {
+  stroke: var(--s1);
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.nwdot {
+  fill: var(--s1);
+}
+
+.nwdot.rust {
+  fill: var(--crit);
+}
+
+.ring {
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.lbl {
+  fill: var(--ink);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.vlbl {
+  fill: var(--ink2);
+  font-size: 11px;
+}
+
+.c1 {
+  fill: var(--s1);
+}
+
+.c2 {
+  fill: var(--s2);
+}
+
+.c1bg {
+  background: var(--s1);
+}
+
+.c2bg {
+  background: var(--s2);
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  font-size: 12.5px;
+  color: var(--ink2);
+  margin-bottom: 6px;
+}
+
+.legend .sw {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 6px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 5px 0;
+}
+
+.bl {
+  flex: 0 0 168px;
+  font-size: 13px;
+  text-align: right;
+  color: var(--ink2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bt {
+  flex: 1;
+  position: relative;
+  background: var(--hairline);
+  border-radius: 4px;
+  height: 18px;
+}
+
+.bf {
+  background: var(--s1);
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  min-width: 2px;
+}
+
+.bf.rust {
+  background: var(--crit);
+}
+
+.bf.faint {
+  background: #7fa8d4;
+}
+
+.avgtick {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--faint);
+  border-radius: 1px;
+}
+
+.tickkey {
+  display: inline-block;
+  width: 2px;
+  height: 11px;
+  background: var(--faint);
+  vertical-align: -1px;
+}
+
+.bv {
+  flex: 0 0 92px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  padding: 8px 8px;
+  border-bottom: 1px solid var(--hairline);
+  text-align: left;
+  font-size: 13.5px;
+  white-space: nowrap;
+}
+
+td {
+  font-variant-numeric: tabular-nums;
+}
+
+th {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+tbody tr:hover {
+  background: color-mix(in oklab, var(--s1) 4%, transparent);
+}
+
+.num {
+  text-align: right;
+}
+
+th.num {
+  text-align: right;
+}
+
+.fn {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 2px 0 10px;
+}
+
+.neg {
+  color: var(--crit);
+}
+
+/* text-styled button (outlier dismiss / show-dismissed) */
+.linklike {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.linklike:hover {
+  color: var(--ink);
+}
+
+/* freshness chip on the meta line; .stale variant when the bank sync stalls */
+.fresh-chip {
+  color: var(--muted);
+}
+
+.fresh-chip.stale {
+  color: var(--crit);
+  font-weight: 600;
+}
+
+.pos {
+  color: var(--good);
+}
+
+.verdict {
+  border-left: 3px solid var(--s1);
+}
+
+.vtext {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 4px 0 10px;
+}
+
+.verdict ul {
+  margin: 0 0 10px;
+  padding-left: 20px;
+}
+
+.verdict li {
+  margin: 4px 0;
+  color: var(--ink2);
+}
+
+.vnote {
+  color: var(--ink2);
+  font-size: 13.5px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.action {
+  background: color-mix(in oklab, var(--s1) 6%, var(--surface));
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13.5px;
+}
+
+.feewarn {
+  color: var(--crit);
+  font-weight: 600;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+}
+
+.empty h2 {
+  color: var(--ink2);
+  font-size: 16px;
+  text-transform: none;
+  letter-spacing: normal;
+  margin-bottom: 8px;
+}
+
+#tip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--ink);
+  color: var(--page);
+  border: 1px solid var(--ink);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12.5px;
+  opacity: 0;
+  transition: opacity 0.08s;
+  z-index: 9;
+  max-width: 280px;
+}
+
+/* ---------- pill / chip (verdict badges, renewal chips, class tags) ---------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  border-radius: 999px;
+  padding: 2px 10px;
+  border: 1px solid var(--chip-border);
+  color: var(--ink2);
+  white-space: nowrap;
+}
+
+.chip-blue {
+  color: var(--s1);
+  border-color: var(--s1);
+}
+
+.chip-green {
+  color: var(--good);
+  border-color: var(--good);
+}
+
+.chip-amber {
+  color: var(--warn);
+  border-color: var(--warn);
+}
+
+.chip-rust {
+  color: var(--crit);
+  border-color: var(--crit);
+}
+
+.chip-rust-solid {
+  color: #fff;
+  background: var(--crit);
+  border-color: var(--crit);
+}
+
+.chip-faint {
+  color: var(--muted);
+  border-color: var(--faint);
+}
+
+/* ---------- top optimizations / patterns strip ---------- */
+
+.topopt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.topopt-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--s1) 4%, var(--surface));
+  border: 1px solid var(--hairline);
+}
+
+.topopt-row:hover {
+  background: color-mix(in oklab, var(--s1) 8%, var(--surface));
+}
+
+.topopt-title {
+  flex: 1;
+  font-size: 13.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .topopt-title { white-space: normal; overflow: visible; text-overflow: clip; }
+}
+
+.topopt-amt {
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--s3);
+  white-space: nowrap;
+}
+
+.topopt-cta {
+  margin-top: 10px;
+  font-size: 12.5px;
+}
+
+.topopt-cta a {
+  color: var(--s1);
+  text-decoration: none;
+}
+
+.topopt-cta a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- category trend (/trends) ---------- */
+
+.cattrend-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.cattrend-bars {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 34px;
+  background: var(--hairline);
+  border-radius: 4px;
+  padding: 2px 3px;
+}
+
+.cattrend-bar {
+  flex: 1;
+  background: var(--s1);
+  border-radius: 2px 2px 0 0;
+  min-height: 2px;
+}
+
+.cattrend-bar:last-child {
+  background: var(--s3);
+}
+
+/* ---------- budget vs actual (/trends) ---------- */
+
+.bf-over {
+  background: var(--crit);
+}
+
+/* ---------- money moves ---------- */
+
+.mm {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mm-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.mm-title {
+  font-weight: 600;
+  font-size: 13.5px;
+}
+
+.mm-amt {
+  color: var(--s3);
+  font-weight: 650;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.mm-rationale {
+  color: var(--ink2);
+  font-size: 13px;
+  margin: 0;
+}
+
+.mm-step {
+  color: var(--muted);
+  font-size: 12.5px;
+  margin: 0;
+}
+
+/* ---------- renewals timeline ---------- */
+
+.timeline-group {
+  padding: 10px 0 6px;
+}
+
+.timeline-group + .timeline-group {
+  border-top: 1px solid var(--hairline);
+}
+
+.timeline-month {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 6px;
+}
+
+.timeline-month .name {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  min-width: 100px;
+}
+
+.timeline-month .note {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.timeline-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 14px;
+}
+
+.timeline-chip {
+  font-size: 12px;
+  background: var(--surface);
+  border: 1px solid var(--chip-border);
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.timeline-chip.amber {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+.timeline-chip.rust {
+  border-color: var(--crit);
+  color: var(--crit);
+  background: var(--crit-bg);
+}
+
+/* ---------- scenario sliders ---------- */
+
+.scenario-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.scenario-row:last-of-type {
+  border-bottom: none;
+}
+
+.scenario-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.scenario-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.scenario-note {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.scenario-result {
+  font-family: var(--font-serif);
+  font-size: 24px;
+}
+
+.scenario-result .unit {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--font-sans);
+}
+
+.scenario-track {
+  height: 12px;
+  background: var(--hairline);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.scenario-fill {
+  height: 100%;
+  background: var(--s1);
+}
+
+.scenario-fill.amber {
+  background: var(--warn);
+}
+
+.scenario-fill.rust {
+  background: var(--crit);
+}
+
+.scenario-fill.green {
+  background: var(--good);
+}
+
+.slider {
+  width: 100%;
+  accent-color: var(--s1);
+  cursor: pointer;
+}
+
+/* ---------- ledger cards (outlier / stream cards) ---------- */
+
+.mini-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin: 14px 0;
+}
+
+.mini-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 13px 15px;
+}
+
+.mini-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.mini-card-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mini-card-amt {
+  font-family: var(--font-serif);
+  font-size: 24px;
+}
+
+.mini-card-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- Ask MoMoney drawer ---------- */
+
+.ask-drawer {
+  position: fixed;
+  /* Fixed + right/bottom-anchored, so it's the other element (besides the
+     nav) that needs its own safe-area padding in standalone mode — this is
+     the home-indicator corner. */
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 20;
+  width: min(360px, calc(100vw - 40px));
+  max-height: min(520px, calc(100vh - 120px));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(33, 32, 28, 0.16);
+  overflow: hidden;
+}
+
+.ask-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.ask-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.ask-convo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ask-turn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ask-q {
+  align-self: flex-end;
+  background: color-mix(in oklab, var(--s1) 12%, var(--surface));
+  border-radius: 10px 10px 2px 10px;
+  padding: 6px 10px;
+  font-size: 13px;
+  max-width: 90%;
+  margin: 0;
+}
+
+.ask-a {
+  align-self: flex-start;
+  background: var(--hairline);
+  border-radius: 10px 10px 10px 2px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 95%;
+  min-width: 0;
+  margin: 0;
+  /* AskAnswer renders markdown as real block/inline elements now (see
+     components/AskAnswer.tsx), so wrapping is handled per-element below
+     rather than by preserving raw whitespace on this container. Long
+     unbroken tokens (URLs, etc.) still must never push the drawer sideways
+     on a narrow (390px) viewport. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Rendered markdown inside an answer bubble: spacing between blocks, list
+   indentation, heading sizes, and code wrapping — the Calm Money treatment
+   for the Ask drawer specifically, none of this leaks outside .ask-a. */
+
+.ask-a > * {
+  margin: 0;
+}
+
+.ask-a > * + * {
+  margin-top: 8px;
+}
+
+.ask-a h4.ask-h1,
+.ask-a h5.ask-h2 {
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.ask-a h4.ask-h1 {
+  font-size: 14.5px;
+}
+
+.ask-a h5.ask-h2 {
+  font-size: 13.5px;
+}
+
+.ask-a ul,
+.ask-a ol {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ask-a li {
+  padding-left: 2px;
+}
+
+.ask-a li > * + * {
+  margin-top: 4px;
+}
+
+.ask-a strong {
+  font-weight: 700;
+}
+
+.ask-a em {
+  font-style: italic;
+}
+
+.ask-a code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  background: color-mix(in oklab, var(--ink) 8%, transparent);
+  border-radius: 4px;
+  padding: 1px 5px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.ask-a pre {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--ink) 8%, transparent);
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.ask-a pre code {
+  background: none;
+  padding: 0;
+  white-space: pre;
+  display: block;
+  width: max-content;
+}
+
+.ask-error {
+  color: var(--crit);
+  font-size: 12.5px;
+}
+
+.ask-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--hairline);
+}
+
+.ask-input {
+  flex: 1;
+  resize: none;
+  background: var(--page);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+}
+
+.ask-send {
+  align-self: flex-end;
+}
+
+@media (max-width: 640px) {
+  .ask-drawer {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: calc(100vw - 24px);
+  }
+}
+
+/* ---------- backlog ---------- */
+
+.backlog-sum {
+  font-size: 15px;
+  margin: 6px 0 18px;
+  color: var(--ink2);
+}
+
+.backlog-sum b {
+  color: var(--ink);
+}
+
+.backlog-group + .backlog-group {
+  margin-top: 24px;
+}
+
+.backlog-group h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.backlog-group .count {
+  background: var(--hairline);
+  color: var(--ink2);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.task-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.task-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.task-impact {
+  font-size: 16px;
+  font-weight: 650;
+  color: var(--s3);
+  white-space: nowrap;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.badge-cancel {
+  background: var(--crit-bg);
+  color: var(--crit);
+}
+
+.badge-negotiate {
+  background: color-mix(in oklab, var(--warn) 14%, var(--surface));
+  color: var(--warn);
+}
+
+.badge-automate {
+  background: color-mix(in oklab, var(--s1) 12%, var(--surface));
+  color: var(--s1);
+}
+
+.badge-review {
+  background: var(--hairline);
+  color: var(--ink2);
+}
+
+.badge-delegate {
+  background: color-mix(in oklab, var(--s3) 14%, var(--surface));
+  color: var(--s3);
+}
+
+.badge-status {
+  background: var(--hairline);
+  color: var(--ink2);
+}
+
+.task-how {
+  margin-top: 10px;
+}
+
+.task-how summary {
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--s1);
+  list-style: none;
+}
+
+.task-how summary::-webkit-details-marker {
+  display: none;
+}
+
+.task-how summary::before {
+  content: "▸ ";
+}
+
+.task-how[open] summary::before {
+  content: "▾ ";
+}
+
+.task-how p {
+  font-size: 13px;
+  color: var(--ink2);
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+.task-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 7px;
+  padding: 7px 12px;
+  border: 1px solid var(--chip-border);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: var(--s1);
+  color: var(--s1);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btn-done {
+  background: color-mix(in oklab, var(--good) 12%, var(--surface));
+  border-color: color-mix(in oklab, var(--good) 45%, var(--chip-border));
+}
+
+.btn-dismiss {
+  background: color-mix(in oklab, var(--crit) 10%, var(--surface));
+  border-color: color-mix(in oklab, var(--crit) 45%, var(--chip-border));
+}
+
+.btn-reopen {
+  background: color-mix(in oklab, var(--s1) 10%, var(--surface));
+  border-color: color-mix(in oklab, var(--s1) 45%, var(--chip-border));
+}
+
+/* ---------- filter bar (Transactions) ---------- */
+
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+
+.filter-input,
+.filter-select {
+  font: inherit;
+  font-size: 13px;
+  border: 1px solid var(--chip-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.filter-input {
+  flex: 1;
+  min-width: 160px;
+}
+
+/* ---------- privacy mode ----------
+   `.amt` wraps a single formatted dollar figure; `.amt` (used via the
+   AmtText helper for free text) wraps a chip/title/prose line that may have
+   a $ figure embedded in it. Both use the same trick: keep the real text in
+   the DOM (so layout never jumps when toggling) but paint it transparent
+   and lay a dot-mask over it via ::after — this is NOT a blur, the real
+   glyphs are simply never painted, so a screenshot can't recover them.
+   `data-mask` supplies the dot string per call site (short for a bare
+   number, longer for a line of prose). `.amt-block` is the heavier variant
+   used for the Ask drawer's free-form LLM answers: it swaps in an explicit
+   "hidden — privacy mode" note instead of dots. */
+
+.amt {
+  position: relative;
+}
+
+.privacy .amt {
+  color: transparent !important;
+}
+
+.privacy .amt::after {
+  content: attr(data-mask);
+  position: absolute;
+  inset: 0;
+  color: var(--ink2);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.amt-block {
+  position: relative;
+}
+
+.privacy .amt-block {
+  color: transparent !important;
+}
+
+.privacy .amt-block::after {
+  content: "hidden — privacy mode";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 8px 10px;
+  background: var(--hairline);
+}
+
+/* Belt-and-suspenders for rendered markdown answers: `color: transparent`
+   on .amt-block already cascades to every descendant (headings, list text,
+   inline code, etc.) since none of them set an explicit color — see the
+   comment on AskAnswer.tsx — but list bullet/number markers are painted via
+   ::marker, which some engines don't reliably inherit color into, so force
+   it explicitly rather than relying on inheritance alone. */
+.privacy .amt-block ::marker {
+  color: transparent;
+}
+
+/* SVG text can't take a ::after dot overlay reliably, so dollar figures in
+   chart axes/labels/tooltips just stop being painted in privacy mode. */
+.privacy .amt-svg {
+  visibility: hidden;
+}
+
+/* ---------- mobile-first responsive ---------- */
+
+@media (max-width: 640px) {
+  body {
+    padding: 0 max(12px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+  }
+
+  .navbar {
+    padding: calc(16px + env(safe-area-inset-top)) 0 12px;
+  }
+
+  .navbar-scroll {
+    gap: 14px;
+  }
+
+  /* Twelve tabs plus Ask + privacy on a 390px-wide screen is the worst
+     surface in the app (v4 PWA addendum) — the horizontal scroll (with
+     momentum, already set on .navbar-scroll) stays, but every tap target
+     in it needs to clear the ~44px minimum. */
+  .navbar-tab {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .navbar-ask {
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+
+  .navbar-privacy {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Recommendations tab action buttons (Open in backlog / See evidence /
+     Dismiss) — same ~44px minimum tap target as the nav above, per the same
+     v4 PWA addendum. .btn's desktop padding (7px 12px at 12.5px) falls well
+     under that at phone widths. */
+  .btn {
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+
+  .page-title {
+    font-size: 26px;
+  }
+
+  .page-head {
+    padding-bottom: 16px;
+  }
+
+  .hero .n {
+    font-size: 38px;
+  }
+
+  .bl {
+    flex-basis: 92px;
+    font-size: 11.5px;
+  }
+
+  .bv {
+    flex-basis: 68px;
+    font-size: 11.5px;
+  }
+
+  .card .v {
+    font-size: 21px;
+  }
+
+  section {
+    padding: 14px 12px;
+  }
+
+  .task-impact {
+    font-size: 14px;
+  }
+
+  .scenario-result {
+    font-size: 20px;
+  }
+}

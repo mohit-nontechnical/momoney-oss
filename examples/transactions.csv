@@ -1,0 +1,29 @@
+date,payee,amount,category,account
+2026-07-01,Example Employer,4200,Income,Demo Checking
+2026-07-02,Example Rent,-1400,Utilities & Home,Demo Checking
+2026-07-03,Corner Market,-96,Groceries,Everyday Card
+2026-07-05,City Transit,-48,Transport,Everyday Card
+2026-07-07,Neighborhood Cafe,-34,Dining & Drinks,Everyday Card
+2026-07-08,Example Streaming,-18,Subscriptions,Everyday Card
+2026-07-10,Community Cinema,-28,Entertainment,Travel Card
+2026-08-01,Example Employer,4200,Income,Demo Checking
+2026-08-02,Example Rent,-1400,Utilities & Home,Demo Checking
+2026-08-03,Corner Market,-96,Groceries,Everyday Card
+2026-08-05,City Transit,-48,Transport,Everyday Card
+2026-08-07,Neighborhood Cafe,-34,Dining & Drinks,Everyday Card
+2026-08-08,Example Streaming,-18,Subscriptions,Everyday Card
+2026-08-10,Community Cinema,-28,Entertainment,Travel Card
+2026-09-01,Example Employer,4200,Income,Demo Checking
+2026-09-02,Example Rent,-1400,Utilities & Home,Demo Checking
+2026-09-03,Corner Market,-96,Groceries,Everyday Card
+2026-09-05,City Transit,-48,Transport,Everyday Card
+2026-09-07,Neighborhood Cafe,-34,Dining & Drinks,Everyday Card
+2026-09-08,Example Streaming,-18,Subscriptions,Everyday Card
+2026-09-10,Community Cinema,-28,Entertainment,Travel Card
+2026-10-01,Example Employer,4200,Income,Demo Checking
+2026-10-02,Example Rent,-1400,Utilities & Home,Demo Checking
+2026-10-03,Corner Market,-96,Groceries,Everyday Card
+2026-10-05,City Transit,-48,Transport,Everyday Card
+2026-10-07,Neighborhood Cafe,-34,Dining & Drinks,Everyday Card
+2026-10-08,Example Streaming,-18,Subscriptions,Everyday Card
+2026-10-10,Community Cinema,-28,Entertainment,Travel Card

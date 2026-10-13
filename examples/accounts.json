@@ -1,0 +1,15 @@
+{
+  "as_of": "2026-10-12",
+  "coverage_start": "2026-07-01",
+  "complete_all_accounts": true,
+  "goal": {"target": 50000, "date": "2027-12-31", "label": "Build a financial cushion"},
+  "income_goal_monthly": 4000,
+  "accounts": [
+    {"name":"Demo Checking", "kind":"cash", "balance":4800},
+    {"name":"Demo Savings", "kind":"cash", "balance":12000},
+    {"name":"Demo Brokerage", "kind":"investment", "balance":18000, "offbudget":true},
+    {"name":"Everyday Card", "kind":"card", "balance":-620, "annual_fee":0, "last4":"0001"},
+    {"name":"Travel Card", "kind":"card", "balance":-240, "annual_fee":120, "last4":"0002", "fee_month":"6"}
+  ],
+  "budgets":{"Groceries":400,"Dining & Drinks":180,"Transport":120,"Utilities & Home":1600,"Subscriptions":60,"Entertainment":100}
+}

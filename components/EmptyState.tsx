@@ -1,0 +1,1 @@
+export default function EmptyState() { return <section className="empty"><h2>No data yet</h2><p className="fn">Run <code>npm run setup:demo</code> to explore with synthetic data, or import your transactions using the CSV setup instructions in the README.</p></section>; }
